@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import time
+import datetime
 
 def coletar_job_ids(keyword, location, limit=50):
     base_url = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
@@ -78,9 +79,10 @@ def main():
         print(f"{i+1}/{len(job_ids)} vagas coletadas.")
         time.sleep(1)
 
-    df = pd.DataFrame(jobs)
-    df.to_csv("linkedin_datascience_jobs.csv", index=False, encoding="utf-8-sig")
-    print("Arquivo salvo como linkedin_datascience_jobs.csv")
+    df = pd.DataFrame(jobs)  # cria DataFrame antes de salvar
+    data_path = f"data/raw/{datetime.datetime.now().strftime('%Y-%m-%d')}_raw.csv"
+    df.to_csv(data_path, index=False, encoding="utf-8-sig")
+    print(f"Arquivo salvo como {data_path}")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,40 @@
+# Web scraping
+selenium==4.10.0
+beautifulsoup4==4.12.2
+requests==2.31.0
+
+# Data manipulation and analysis
+pandas==2.0.3
+numpy==1.25.2
+
+# Data visualization
+matplotlib==3.8.0
+seaborn==0.12.2
+plotly==5.15.0
+
+# Machine learning and clustering
+scikit-learn==1.2.2
+scipy==1.11.1
+
+# Natural language processing (feature engineering textual)
+nltk==3.8.1
+spacy==3.6.1
+
+# Jupyter and notebook support
+jupyterlab==4.0.6
+ipython==8.14.0
+
+# Testing
+pytest==7.4.0
+
+# Others/utilities
+python-dotenv==1.0.0
+tqdm==4.66.1
+joblib==1.3.2
+
+# Type hints and code quality (optional, but profissional)
+mypy==1.5.1
+flake8==6.0.0
+
+# Optional: to manage versions consistently
+pip-tools==6.13.0
