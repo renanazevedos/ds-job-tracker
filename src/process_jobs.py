@@ -50,11 +50,9 @@ def carregar_arquivo_raw():
 def main():
     df = carregar_arquivo_raw()
     
-    # Preencher campos nulos com string vazia para evitar erro na concatenação
     df["title"] = df["title"].fillna("")
     df["description"] = df["description"].fillna("")
     
-    # Criar coluna texto combinada para extração
     df["titulo_descr"] = df["title"] + " " + df["description"]
     
     # Extrair features
@@ -62,17 +60,19 @@ def main():
     df["idioma"] = df["description"].apply(extrair_idioma)
     df["certificado"] = df["description"].apply(extrair_certificado)
     
-    # Vetorização TF-IDF para clustering (usar apenas descrição e título)
+    # Vetorização TF-IDF para clustering
     vectorizer = TfidfVectorizer(stop_words='english', max_features=5000)
     X = vectorizer.fit_transform(df["titulo_descr"])
     
-    # Clustering KMeans (exemplo: 5 clusters)
+    # Clustering KMeans
     n_clusters = 5
     kmeans = KMeans(n_clusters=n_clusters, random_state=42)
     df["cluster"] = kmeans.fit_predict(X)
     
-    # Salvar arquivo processado
-    df.to_csv("data/processed/jobs_processed.csv", index=False, encoding="utf-8-sig")
+    output_path = "data/processed/jobs_processed.csv"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    df.to_csv(output_path, index=False, encoding="utf-8-sig")
     print("Arquivo processado salvo em data/processed/jobs_processed.csv")
 
 if __name__ == "__main__":
