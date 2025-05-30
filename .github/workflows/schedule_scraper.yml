@@ -13,6 +13,11 @@ jobs:
       - name: Clona o repositório
         uses: actions/checkout@v3
 
+      - name: Debug - verifica diretório atual e arquivos
+        run: |
+          pwd
+          ls -l
+
       - name: Verifica arquivos no diretório atual
         run: ls -la
 
