@@ -13,6 +13,9 @@ jobs:
       - name: Clona o repositório
         uses: actions/checkout@v3
 
+      - name: Verifica arquivos no diretório atual
+        run: ls -la
+
       - name: Configura ambiente Python
         uses: actions/setup-python@v4
         with:
@@ -23,6 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      
       - name: Executa pipeline completo
         run: python main.py
 
