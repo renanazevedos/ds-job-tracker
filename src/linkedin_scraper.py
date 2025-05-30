@@ -4,6 +4,7 @@ import pandas as pd
 import re
 import time
 import datetime
+import os
 
 def coletar_job_ids(keyword, location, limit=50):
     base_url = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
@@ -67,9 +68,9 @@ def coletar_job_detalhes(job_id):
         print(f"Erro ao processar vaga {job_id}: {e}")
         return None
 
-def main():
+def main(keyword="Cientista de Dados", location="São Paulo", limit=50):
     print("Iniciando scraping...")
-    job_ids = coletar_job_ids("Cientista de Dados", "São Paulo", limit=50)
+    job_ids = coletar_job_ids(keyword, location, limit)
 
     jobs = []
     for i, job_id in enumerate(job_ids):
@@ -79,8 +80,12 @@ def main():
         print(f"{i+1}/{len(job_ids)} vagas coletadas.")
         time.sleep(1)
 
-    df = pd.DataFrame(jobs)  # cria DataFrame antes de salvar
-    data_path = f"data/raw/{datetime.datetime.now().strftime('%Y-%m-%d')}_raw.csv"
+    df = pd.DataFrame(jobs)
+
+    hoje = datetime.datetime.now().strftime('%Y-%m-%d')
+    data_path = f"data/raw/{hoje}_raw.csv"
+    os.makedirs(os.path.dirname(data_path), exist_ok=True)
+
     df.to_csv(data_path, index=False, encoding="utf-8-sig")
     print(f"Arquivo salvo como {data_path}")
 
