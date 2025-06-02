@@ -5,6 +5,9 @@ on:
     - cron: '0 12 * * *'  # Executa todo dia às 9h (horário de Brasília, 12h UTC)
   workflow_dispatch:      # Permite rodar manualmente via botão no GitHub
 
+permissions:
+  contents: write
+
 jobs:
   scraper:
     runs-on: ubuntu-latest
