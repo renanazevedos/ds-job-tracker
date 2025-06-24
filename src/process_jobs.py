@@ -1,10 +1,11 @@
 import os
-import glob
 import pandas as pd
-import re
 from datetime import datetime
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
+import json
+from nltk.corpus import stopwords
+
 
 def extrair_senioridade(texto):
     texto = texto.lower()
@@ -40,15 +41,16 @@ def extrair_certificado(texto):
         return "Não especificado"
 
 def carregar_arquivo_raw():
-    arquivos = glob.glob("data/raw/*_raw.csv")
-    if not arquivos:
-        raise FileNotFoundError("Nenhum arquivo raw encontrado em data/raw/")
-    ultimo_arquivo = max(arquivos, key=os.path.getctime)
-    print(f"Carregando arquivo: {ultimo_arquivo}")
-    return pd.read_csv(ultimo_arquivo)
+    arquivo = os.path.join("data", "raw", "linkedin_datascience_jobs.csv")
+    if not os.path.exists(arquivo):
+        raise FileNotFoundError(f"{arquivo} não encontrado.")
+    return pd.read_csv(arquivo)
 
 def main():
     df = carregar_arquivo_raw()
+
+    if 'data_coleta' not in df.columns:
+        df['data_coleta'] = datetime.now().strftime('%Y-%m-%d')
     
     df["title"] = df["title"].fillna("")
     df["description"] = df["description"].fillna("")
@@ -61,7 +63,8 @@ def main():
     df["certificado"] = df["description"].apply(extrair_certificado)
     
     # Vetorização TF-IDF para clustering
-    vectorizer = TfidfVectorizer(stop_words='english', max_features=5000)
+    stopwords_custom =  stopwords.words("portuguese") + stopwords.words("english") + ['vaga', 'área', 'experiência', 'modelo', 'responsável','empresa', 'pessoa', 'atuar', 'informações', 'projeto', 'trabalho','pra','mundo','gente','quer','ter', 'vaga', 'nós', 'estar', 'será', 'todos', 'das', 'sempre', 'will', 'etc', 'fazer', 'aos', 'ano', 'os', 'até', 'suas', 'ser', 'além', 'pessoa', 'cada', 'à', 'todas', 'são', 'não', 'nos', 'sua', 'nossos', 'sobre', 'utilizando', 'nossa', 'onde', 'dia', 'todo', 'a', 'de', 'e', 'para', 'em', 'da', 'atividades', 'principais', 'do', 'somos', 'um', 'é', 'está', 'busca', 'buscando', 'dados', 'que', 'o', 'nosso', 'na', 'como', 'você', 'trabalhar', 'ou', 'mais','ao','seu','por','toda','less', 'more', 'Show', 'se', 'uma', 'dos', 'estamos', 'moreShow', 'você', 'deficiência', 'disability', 'odontológico', 'saúde', 'nossas', 'Entrevista', 'anos','parte','pelo', 'Desconto', 'aqui']
+    vectorizer = TfidfVectorizer(stop_words=stopwords_custom, max_features=1000)
     X = vectorizer.fit_transform(df["titulo_descr"])
     
     # Clustering KMeans
@@ -69,11 +72,25 @@ def main():
     kmeans = KMeans(n_clusters=n_clusters, random_state=42)
     df["cluster"] = kmeans.fit_predict(X)
     
-    output_path = "data/processed/jobs_processed.csv"
+    output_path = os.path.join("data", "processed", "vagas_com_clusters.csv")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-
     df.to_csv(output_path, index=False, encoding="utf-8-sig")
-    print("Arquivo processado salvo em data/processed/jobs_processed.csv")
+    print("Arquivo processado salvo em data/processed/vagas_com_clusters.csv")
+
+    # Extrair top termos por cluster
+    top_terms = {}
+    vocab = vectorizer.get_feature_names_out()
+    for cluster_id in sorted(df['cluster'].unique()):
+        mask = (df['cluster'] == cluster_id).to_numpy()
+        termos_cluster = X[mask]
+        termos_freq = termos_cluster.sum(axis=0).A1
+        termos_dict = {vocab[i]: termos_freq[i] for i in range(len(vocab))}
+        termos_ordenados = sorted(termos_dict.items(), key=lambda x: x[1], reverse=True)[:15]
+        top_terms[str(cluster_id)] = [termo for termo, _ in termos_ordenados]
+
+    with open(os.path.join("data", "processed", "top_terms.json"), "w", encoding="utf-8") as f:
+        json.dump(top_terms, f, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
     main()
+

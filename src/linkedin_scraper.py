@@ -81,13 +81,14 @@ def main(keyword="Cientista de Dados", location="São Paulo", limit=50):
         time.sleep(1)
 
     df = pd.DataFrame(jobs)
-
-    hoje = datetime.datetime.now().strftime('%Y-%m-%d')
-    data_path = f"data/raw/{hoje}_raw.csv"
-    os.makedirs(os.path.dirname(data_path), exist_ok=True)
-
+    df["data_coleta"] = datetime.datetime.now().strftime('%Y-%m-%d')
+    
+    data_path = os.path.join("data", "raw", "linkedin_datascience_jobs.csv")
     df.to_csv(data_path, index=False, encoding="utf-8-sig")
     print(f"Arquivo salvo como {data_path}")
+
+    backup_path = os.path.join("data", "raw", f"{datetime.datetime.now().strftime('%Y-%m-%d')}_raw.csv")
+    df.to_csv(backup_path, index=False, encoding="utf-8-sig")
 
 if __name__ == "__main__":
     main()
