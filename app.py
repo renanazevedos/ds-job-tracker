@@ -6,7 +6,7 @@ import json
 
 # Configurar janela
 st.set_page_config(page_title="Análise de Clusters", layout="wide")
-st.title("🔍 Vagas por Cluster (Resultados do Jupyter)")
+st.title("🔍 Vagas por Cluster")
 
 # Carregar dados
 @st.cache_data
