@@ -77,6 +77,13 @@ Essa experiência despertou a ideia deste projeto. Decidi aplicar técnicas de c
 
 ---
 
+## 🎬 Demo
+
+Você pode acessar o dashboard interativo com os resultados do projeto neste link:  
+👉 [https://ds-job-tracker.streamlit.app/](https://ds-job-tracker.streamlit.app/)
+
+---
+
 ## 💡 Melhorias Futuras
 
 - Adição de novas variáveis no clustering (skills, localidade, senioridade, etc.)
@@ -92,4 +99,4 @@ Fique à vontade para abrir issues, sugerir melhorias ou contribuir com novas fu
 
 ---
 
-Desenvolvido por **[Renan](www.linkedin.com/in/renan-azevedos)**
+Desenvolvido por **[Renan](https://www.linkedin.com/in/renan-azevedos)**
