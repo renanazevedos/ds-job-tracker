@@ -40,6 +40,14 @@ def extrair_certificado(texto):
     else:
         return "Não especificado"
 
+def get_stopwords():
+    import nltk
+    try:
+        return stopwords.words("portuguese") + stopwords.words("english")
+    except LookupError:
+        nltk.download("stopwords", quiet=True)
+        return stopwords.words("portuguese") + stopwords.words("english")
+
 def carregar_arquivo_raw():
     arquivo = os.path.join("data", "raw", "linkedin_datascience_jobs.csv")
     if not os.path.exists(arquivo):
@@ -63,7 +71,7 @@ def main():
     df["certificado"] = df["description"].apply(extrair_certificado)
     
     # Vetorização TF-IDF para clustering
-    stopwords_custom =  stopwords.words("portuguese") + stopwords.words("english") + ['vaga', 'área', 'experiência', 'modelo', 'responsável','empresa', 'pessoa', 'atuar', 'informações', 'projeto', 'trabalho','pra','mundo','gente','quer','ter', 'vaga', 'nós', 'estar', 'será', 'todos', 'das', 'sempre', 'will', 'etc', 'fazer', 'aos', 'ano', 'os', 'até', 'suas', 'ser', 'além', 'pessoa', 'cada', 'à', 'todas', 'são', 'não', 'nos', 'sua', 'nossos', 'sobre', 'utilizando', 'nossa', 'onde', 'dia', 'todo', 'a', 'de', 'e', 'para', 'em', 'da', 'atividades', 'principais', 'do', 'somos', 'um', 'é', 'está', 'busca', 'buscando', 'dados', 'que', 'o', 'nosso', 'na', 'como', 'você', 'trabalhar', 'ou', 'mais','ao','seu','por','toda','less', 'more', 'Show', 'se', 'uma', 'dos', 'estamos', 'moreShow', 'você', 'deficiência', 'disability', 'odontológico', 'saúde', 'nossas', 'Entrevista', 'anos','parte','pelo', 'Desconto', 'aqui']
+    stopwords_custom =  get_stopwords() + ['vaga', 'área', 'experiência', 'modelo', 'responsável','empresa', 'pessoa', 'atuar', 'informações', 'projeto', 'trabalho','pra','mundo','gente','quer','ter', 'vaga', 'nós', 'estar', 'será', 'todos', 'das', 'sempre', 'will', 'etc', 'fazer', 'aos', 'ano', 'os', 'até', 'suas', 'ser', 'além', 'pessoa', 'cada', 'à', 'todas', 'são', 'não', 'nos', 'sua', 'nossos', 'sobre', 'utilizando', 'nossa', 'onde', 'dia', 'todo', 'a', 'de', 'e', 'para', 'em', 'da', 'atividades', 'principais', 'do', 'somos', 'um', 'é', 'está', 'busca', 'buscando', 'dados', 'que', 'o', 'nosso', 'na', 'como', 'você', 'trabalhar', 'ou', 'mais','ao','seu','por','toda','less', 'more', 'Show', 'se', 'uma', 'dos', 'estamos', 'moreShow', 'você', 'deficiência', 'disability', 'odontológico', 'saúde', 'nossas', 'Entrevista', 'anos','parte','pelo', 'Desconto', 'aqui']
     vectorizer = TfidfVectorizer(stop_words=stopwords_custom, max_features=1000)
     X = vectorizer.fit_transform(df["titulo_descr"])
     
