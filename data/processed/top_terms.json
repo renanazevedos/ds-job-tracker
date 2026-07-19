@@ -1,20 +1,20 @@
 {
     "0": [
-        "gerdau",
-        "assistência",
-        "benefícios",
-        "refeitório",
+        "porto",
         "modelos",
-        "soluções",
-        "acesso",
-        "futuro",
-        "profissional",
-        "deep",
-        "mudança",
-        "monitoramento",
+        "gerdau",
         "colaboradores",
+        "assistência",
+        "soluções",
+        "benefícios",
         "plano",
-        "analíticas"
+        "acesso",
+        "complexo",
+        "refeitório",
+        "negócio",
+        "projetos",
+        "ambiente",
+        "futuro"
     ],
     "1": [
         "bradesco",
@@ -34,6 +34,23 @@
         "estratégias"
     ],
     "2": [
+        "conhecimentos",
+        "itaú",
+        "prod",
+        "tradicional",
+        "soluções",
+        "ia",
+        "cultura",
+        "resultados",
+        "plano",
+        "pessoas",
+        "foco",
+        "banco",
+        "decisões",
+        "learning",
+        "machine"
+    ],
+    "3": [
         "data",
         "business",
         "experience",
@@ -50,38 +67,21 @@
         "pricing",
         "related"
     ],
-    "3": [
-        "syngenta",
+    "4": [
         "equipe",
-        "grafos",
+        "cientista",
+        "análise",
+        "syngenta",
         "equipes",
+        "habilidades",
+        "forma",
+        "grafos",
+        "estatística",
+        "algoritmos",
         "cadeia",
         "suprimentos",
-        "análise",
-        "cientista",
-        "habilidades",
-        "algoritmos",
         "ciência",
-        "forma",
-        "agricultores",
-        "agrícola",
-        "demanda"
-    ],
-    "4": [
-        "porto",
-        "modelos",
-        "soluções",
-        "complexo",
-        "conhecimentos",
-        "plano",
-        "pessoas",
-        "itaú",
-        "prod",
-        "tradicional",
-        "seguro",
-        "negócio",
-        "respeito",
-        "bank",
-        "matriz"
+        "descrição",
+        "autônoma"
     ]
 }
